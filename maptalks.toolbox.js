@@ -377,6 +377,6 @@
     });
 
     if (nodeEnv) {
-        exports = module.exports = maptalks.ClusterLayer;
+        exports = module.exports = maptalks.ui.Toolbox;
     }
 })();
