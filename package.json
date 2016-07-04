@@ -1,11 +1,11 @@
 {
   "name": "maptalks.toolbox",
   "version": "0.1.0",
-  "description": "Toolbox, a UI plugin for maptalks.js. ",
+  "description": "A Toolbox plugin for maptalks.js.",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/brucin/maptalks.toolbox.js.git"
+    "url": "https://github.com/brucin/maptalks.toolbox.js"
   },
   "main": "maptalks.toolbox.js",
   "scripts": {
