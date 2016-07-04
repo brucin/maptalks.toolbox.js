@@ -1,3 +1,3 @@
 # maptalks.toolbox.js
 
-Toolbox, A UI plugin for maptalks.js.
+A Toolbox plugin for maptalks.js.
