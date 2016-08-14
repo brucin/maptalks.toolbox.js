@@ -10,22 +10,6 @@
         maptalks = window.maptalks;
     }
 
-    var styles = {
-        'maptalks-toolbox' : 'background-color: #ffffff;',
-            /*border: 1px solid #C4C7CC;*/
-            /*max-height: 20px;*/
-
-        'maptalks-toolbox-button' : [
-            'cursor: pointer',
-            'padding: 1px',
-            'background-color: #ffffff',
-            'border: 1px solid #ecedef',
-            'color: #6490C4',
-            'font-size: 16px',
-            'white-space: nowrap'
-        ].join(';')
-    }
-
     /**
      * @classdesc
      * Represents a toolbox ui component for geometries.
@@ -51,7 +35,7 @@
         options:{
             'eventsToStop' : 'mousedown dblclick click',
             'autoPan': false,
-            'style': styles['maptalks-toolbox'],
+            'style': 'maptalks-toolbox',
             'vertical' : false,
             'items': []
         },
@@ -94,7 +78,7 @@
         buildOn: function(map) {
             var dom = maptalks.DomUtil.createEl('div');
             if(this.options['style']) {
-                maptalks.DomUtil.setStyle(dom, this.options['style']);
+                maptalks.DomUtil.addClass(dom, this.options['style']);
             }
             var items = this.options['items'];
             if(items&&items.length>0) {
@@ -181,7 +165,7 @@
             _menuDom.style.cssText = 'text-align:center;display:-moz-inline-box;display:' + block
                                    + ';width:' + width + 'px;height:' + height + 'px;';
 
-            maptalks.DomUtil.setStyle(_menuDom, styles['maptalks-toolbox-button']);
+            maptalks.DomUtil.addClass(_menuDom, 'maptalks-toolbox-button');
 
             _menuDom.appendChild(this._createIconDom(options));
 
