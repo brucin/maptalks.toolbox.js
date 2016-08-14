@@ -91,7 +91,7 @@
             }
         },
 
-        _createDOM: function() {
+        buildOn: function(map) {
             var dom = maptalks.DomUtil.createEl('div');
             if(this.options['style']) {
                 maptalks.DomUtil.setStyle(dom, this.options['style']);
@@ -128,19 +128,18 @@
             return width;
         },
 
-        //菜单监听地图的事件
-        _registerEvents: function() {
-            this._map = this.getMap();
-            this._map.on('_zoomstart _zoomend _movestart', this.hide, this);
-        },
+        getEvents: function () {
+           return {
+              '_zoomstart _zoomend _movestart' : this.hide
+           };
+       },
 
-        //菜单监听地图的事件
-        _removeEvents: function() {
-            this._map.off('_zoomstart _zoomend _movestart', this.hide, this);
-            this._removeDomEvents(this._toolboxDom);
+        onDomRemove: function() {
+          this._removeDomEvents(this._toolboxDom);
         },
 
         _removeDomEvents: function(dom) {
+            if(!dom) return;
             var children = dom.childNodes;
             for(var i=0,len=children.length;i<len;i++) {
                 var node = children[i];
