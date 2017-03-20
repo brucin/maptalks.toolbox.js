@@ -26,11 +26,17 @@
     });
 
     var layer = new maptalks.VectorLayer('layer').addTo(map);
-    map.on('click', addMarker);
+    map.on('click', clickMap);
 
-    function addMarker(param) {
-        map.off('click', addMarker);
+    addMarker(new maptalks.Coordinate(0,0));
+
+    function clickMap(param) {
         var coordinate = param.coordinate;
+        addMarker(coordinate);
+    }
+    
+    function addMarker(coordinate) {
+        map.off('click', clickMap);
         var path = [{
             path:'M0.266084 0c0.146933,0 0.266084,0.119151 0.266084,0.266084 0,0.0724431 -0.0289833,0.138123 -0.0759576,0.186109l-0.0949907 0.110753 -0.0856567 0.0997072 0.117919 0 0 0.0218934 -0.24432 0 0 -0.0218934 0.107444 0 -0.0856491 -0.0997072 -0.0949984 -0.110753c-0.0469743,-0.047986 -0.0759576,-0.113666 -0.0759576,-0.186109 0,-0.146933 0.119151,-0.266084 0.266084,-0.266084zm0 0.034605c0.127823,0 0.231479,0.103655 0.231479,0.231479 0,0.127823 -0.103655,0.231479 -0.231479,0.231479 -0.127823,0 -0.231479,-0.103655 -0.231479,-0.231479 0,-0.127823 0.103655,-0.231479 0.231479,-0.231479z',
             'fill-rule':'evenodd'
@@ -54,7 +60,7 @@
             toolbox.show();
         });
         marker.on('remove', function(){
-            map.on('click', addMarker);
+            map.on('click', clickMap);
         });
     }
 
