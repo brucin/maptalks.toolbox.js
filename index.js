@@ -16,16 +16,18 @@ const defaultOptions = {
     'items': []
 };
 
+/**
+ * @classdesc
+ * Class for toolbox.
+ * @category ui
+ * @extends ui.UIComponent
+ * @memberOf ui
+ */
 export class Toolbox extends maptalks.ui.UIComponent {
     /**
      * Toolbox items is set to options.items or by setItems method. <br>
      * <br>
-     * Normally items is a object array, containing: <br>
-     * 1. item object: {'item': 'This is a menu text', 'click': function() {alert('oops! You clicked!');)}} <br>
-     * 2. minus string "-", which will draw a splitor line on the menu. <br>
-     * <br>
-     * If options.custom is set to true, the menu is considered as a customized one. Then items is the customized html codes or HTMLElement. <br>
-     * @param {Object} options - options defined in [ui.Menu]{@link ui.Menu#options}
+     * @param {Object} options - options defined in [ui.Toolbox]{@link ui.Toolbox#options}
      */
     constructor(options) {
         super(options);
@@ -40,17 +42,9 @@ export class Toolbox extends maptalks.ui.UIComponent {
     }
 
     /**
-     * Set the items of the menu.
-     * @param {Object[]|String|HTMLElement} items - items of the menu
-     * return {ui.Menu} this
-     * @example
-     * menu.setItems([
-     *      //return false to prevent event propagation
-     *     {'item': 'Query', 'click': function() {alert('Query Clicked!'); return false;}},
-     *     '-',
-     *     {'item': 'Edit', 'click': function() {alert('Edit Clicked!')}},
-     *     {'item': 'About', 'click': function() {alert('About Clicked!')}}
-     * ]);
+     * Set the items of the toolbox.
+     * @param {Object[]|String|HTMLElement} items - items of the toolbox
+     * return {ui.Toolbox} this
      */
     setItems(items) {
         this.options['items'] = items;
@@ -58,8 +52,8 @@ export class Toolbox extends maptalks.ui.UIComponent {
     }
 
     /**
-     * Get items of  the menu.
-     * @return {Object[]|String|HTMLElement} - items of the menu
+     * Get items of  the toolbox.
+     * @return {Object[]|String|HTMLElement} - items of the toolbox
      */
     getItems() {
         return this.options['items'] || [];
@@ -67,7 +61,7 @@ export class Toolbox extends maptalks.ui.UIComponent {
 
 
     /**
-     * get pixel size of menu
+     * get pixel size of toolbox
      * @return {Size} size
      */
     getSize() {
