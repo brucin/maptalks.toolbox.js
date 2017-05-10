@@ -21,6 +21,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @property {String} eventsToStop - prevent mouse event on this ui component.
  * @property {Boolean} [options.autoPan=false]  - set it to false if you don't want the map to do panning animation to fit the opened menu.
  * @property {String}  style  - default style for this ui component.
+ * @property {Boolean} [options.vertical=false] - vertical display toolbar.
  * @property {Object[]|String|HTMLElement}  options.items   - html code or a html element is options.custom is true. Or a menu items array, containing: item objects, "-" as a splitor line
  * @memberOf ui.Toolbox
  * @instance
@@ -59,6 +60,13 @@ var Toolbox = function (_maptalks$ui$UICompon) {
     };
 
     Toolbox.prototype.addTo = function addTo(owner) {
+        var _this2 = this;
+
+        if (owner instanceof maptalks.Geometry) {
+            owner.on('positionchange', function () {
+                return _this2._coordinate = owner.getCenter();
+            });
+        }
         return maptalks.ui.UIComponent.prototype.addTo.apply(this, arguments);
     };
 
@@ -75,7 +83,7 @@ var Toolbox = function (_maptalks$ui$UICompon) {
     };
 
     /**
-     * Get items of  the toolbox.
+     * Get items of the toolbox.
      * @return {Object[]|String|HTMLElement} - items of the toolbox
      */
 
@@ -170,13 +178,10 @@ var Toolbox = function (_maptalks$ui$UICompon) {
         if (tag) {
             _menuDom = maptalks.DomUtil.createEl(tag);
         }
-        var width = options['width'] || 16;
-        var height = options['height'] || 16;
-        var vertical = options['vertical'];
-        if (vertical === undefined || vertical == null) {
-            vertical = false;
-        }
-        var block = 'inline-block';
+        var width = options['width'] || 16,
+            height = options['height'] || 16,
+            vertical = options['vertical'] || defaultOptions['vertical'],
+            block = 'inline-block';
         if (vertical) {
             block = 'block';
         }
@@ -258,19 +263,19 @@ var Toolbox = function (_maptalks$ui$UICompon) {
         var height = 16,
             width = 16;
         if (children && children.length > 0) {
-            for (var i = 0; i < children.length; i++) {
+            for (var i = 0, len = children.length; i < len; i++) {
                 var child = children[i];
                 height += child['height'] || 0;
                 width += child['width'] || 0;
             }
         }
-        var docHeight = document.body.clientHeight;
-        var docWidth = document.body.clientWidth;
-        var parentHeight = _parentDom.clientHeight;
-        var parentWidth = _parentDom.clientWidth;
-        var point = maptalks.DomUtil.getPagePosition(_parentDom);
-        var parentTop = point['y'];
-        var parentLeft = point['x'];
+        var docHeight = document.body.clientHeight,
+            docWidth = document.body.clientWidth,
+            parentHeight = _parentDom.clientHeight,
+            parentWidth = _parentDom.clientWidth;
+        var point = maptalks.DomUtil.getPagePosition(_parentDom),
+            parentTop = point['y'],
+            parentLeft = point['x'];
         var vertical = options['vertical'];
         if (vertical === undefined || vertical == null) {
             vertical = false;
@@ -297,10 +302,7 @@ var Toolbox = function (_maptalks$ui$UICompon) {
     };
 
     Toolbox.prototype._createDropMenu = function _createDropMenu(_parentDom, options) {
-        var vertical = options['vertical'];
-        if (vertical === undefined || vertical == null) {
-            vertical = false;
-        }
+        var vertical = options['vertical'] || defaultOptions['vertical'];
         var style = 'position: absolute;';
         if (vertical) {
             style += 'left: -10000px;';
@@ -314,12 +316,12 @@ var Toolbox = function (_maptalks$ui$UICompon) {
         var dom = _parentDom.children[1];
         if (dom) maptalks.DomUtil.removeDomNode(dom);
         var _dropdownMenu = maptalks.DomUtil.createElOn('ul', style);
-        //构造下拉菜单
+        //create drop menu.
         var items = options['children'];
         if (items && items.length > 0) {
             for (var i = 0, len = items.length; i < len; i++) {
                 var item = items[i];
-                if (item['vertical'] === undefined) {
+                if (!item['vertical']) {
                     item['vertical'] = !(item['vertical'] || options['vertical']);
                 }
                 _dropdownMenu.appendChild(this._createMenuDom(item, 'li'));
@@ -331,13 +333,13 @@ var Toolbox = function (_maptalks$ui$UICompon) {
 
     Toolbox.prototype._createIconDom = function _createIconDom(options) {
         var _spanDom = maptalks.DomUtil.createEl('span');
-        var icon = options['icon'];
-        var content = options['item'];
-        var title = options['title'];
-        var html = options['html'];
+        var icon = options['icon'],
+            content = options['item'],
+            title = options['title'],
+            html = options['html'];
         if (icon) {
-            var width = options['iconWidth'] || options['width'];
-            var height = options['iconHeight'] || options['height'];
+            var width = options['iconWidth'] || options['width'],
+                height = options['iconHeight'] || options['height'];
             var _imgDom = maptalks.DomUtil.createEl('img');
             _imgDom.src = icon;
             _imgDom.border = 0;

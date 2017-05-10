@@ -4,6 +4,7 @@ import * as maptalks from 'maptalks';
  * @property {String} eventsToStop - prevent mouse event on this ui component.
  * @property {Boolean} [options.autoPan=false]  - set it to false if you don't want the map to do panning animation to fit the opened menu.
  * @property {String}  style  - default style for this ui component.
+ * @property {Boolean} [options.vertical=false] - vertical display toolbar.
  * @property {Object[]|String|HTMLElement}  options.items   - html code or a html element is options.custom is true. Or a menu items array, containing: item objects, "-" as a splitor line
  * @memberOf ui.Toolbox
  * @instance
@@ -38,6 +39,9 @@ export class Toolbox extends maptalks.ui.UIComponent {
     }
 
     addTo(owner) {
+        if(owner instanceof maptalks.Geometry) {
+            owner.on('positionchange', () => this._coordinate = owner.getCenter());
+        }
         return maptalks.ui.UIComponent.prototype.addTo.apply(this, arguments);
     }
 
@@ -52,7 +56,7 @@ export class Toolbox extends maptalks.ui.UIComponent {
     }
 
     /**
-     * Get items of  the toolbox.
+     * Get items of the toolbox.
      * @return {Object[]|String|HTMLElement} - items of the toolbox
      */
     getItems() {
@@ -73,18 +77,18 @@ export class Toolbox extends maptalks.ui.UIComponent {
     }
 
     buildOn() {
-        var dom = maptalks.DomUtil.createEl('div');
+        let dom = maptalks.DomUtil.createEl('div');
         if (this.options['style']) {
             maptalks.DomUtil.addClass(dom, this.options['style']);
         }
-        var items = this.options['items'];
+        let items = this.options['items'];
         if (items && items.length > 0) {
-            var maxWidth = 0, maxHeight = 0;
-            for (var i = 0, len = items.length; i < len; i++) {
-                var item = items[i];
+            let maxWidth = 0, maxHeight = 0;
+            for (let i = 0, len = items.length; i < len; i++) {
+                let item = items[i];
                 if (!item['hidden']) {
                     item['vertical'] = item['vertical'] || this.options['vertical'];
-                    var menuDom = this._createMenuDom(item);
+                    let menuDom = this._createMenuDom(item);
                     dom.appendChild(menuDom);
                     maxWidth += (item['width'] || 0) + 4;
                     maxHeight += (item['height'] || 0) + 2;
@@ -101,8 +105,8 @@ export class Toolbox extends maptalks.ui.UIComponent {
     }
 
     _getWidth() {
-        var defaultWidth = 160;
-        var width = this.options['width'];
+        let defaultWidth = 160;
+        let width = this.options['width'];
         if (!width) {
             width = defaultWidth;
         }
@@ -121,9 +125,9 @@ export class Toolbox extends maptalks.ui.UIComponent {
 
     _removeDomEvents(dom) {
         if (!dom) return;
-        var children = dom.childNodes;
-        for (var i = 0, len = children.length; i < len; i++) {
-            var node = children[i];
+        let children = dom.childNodes;
+        for (let i = 0, len = children.length; i < len; i++) {
+            let node = children[i];
             if (node && node.childNodes.length > 0) {
                 this._removeDomEvents(node);
             } else {
@@ -145,17 +149,14 @@ export class Toolbox extends maptalks.ui.UIComponent {
     }
 
     _createMenuDom(options, tag) {
-        var _menuDom = maptalks.DomUtil.createEl('span');
+        let _menuDom = maptalks.DomUtil.createEl('span');
         if (tag) {
             _menuDom = maptalks.DomUtil.createEl(tag);
         }
-        var width = options['width'] || 16;
-        var height = options['height'] || 16;
-        var vertical = options['vertical'];
-        if (vertical === undefined || vertical == null) {
-            vertical = false;
-        }
-        var block = 'inline-block';
+        let width = options['width'] || 16,
+            height = options['height'] || 16,
+            vertical = options['vertical'] || defaultOptions['vertical'],
+            block = 'inline-block';
         if (vertical) {
             block = 'block';
         }
@@ -182,8 +183,8 @@ export class Toolbox extends maptalks.ui.UIComponent {
             maptalks.DomUtil.on(_menuDom, 'mouseup', options['mouseup'], this);
         }
         this._addEventToMenuItem(_menuDom, options);
-        var me = this;
-        var trigger = options['trigger'] || 'click';
+        let me = this;
+        let trigger = options['trigger'] || 'click';
         if (trigger === 'click') {
             maptalks.DomUtil.on(_menuDom, 'click', function () {
                 me._showDropMenu(_menuDom, options);
@@ -198,9 +199,9 @@ export class Toolbox extends maptalks.ui.UIComponent {
 
     _addEventToMenuItem(_parentDom, options) {
         if (options['children'] && options['children'].length > 0) {
-            var me = this;
-            var _dropdownMenu = me._createDropMenu(_parentDom, options);
-            var trigger = options['trigger'];
+            let me = this;
+            let _dropdownMenu = me._createDropMenu(_parentDom, options);
+            let trigger = options['trigger'];
             if (trigger === 'click') {
                 maptalks.DomUtil.on(_parentDom, 'click', function () {
                     maptalks.DomUtil.setStyle(_dropdownMenu, 'display : block');
@@ -226,35 +227,35 @@ export class Toolbox extends maptalks.ui.UIComponent {
 
     _showDropMenu(parentDom, options) {
         if (options['children'] && options['children'].length > 0) {
-            var offset = this._getDropdownMenuOffset(parentDom, options);
-            var dom = parentDom.lastChild;
+            let offset = this._getDropdownMenuOffset(parentDom, options);
+            let dom = parentDom.lastChild;
             dom.style.cssText = 'position: absolute; top:' + offset['top'] + 'px; left:' + offset['left'] + 'px;';
             this.fire('showmenuend');
         }
     }
 
     _getDropdownMenuOffset(_parentDom, options) {
-        var children = options['children'];
-        var height = 16, width = 16;
+        let children = options['children'];
+        let height = 16, width = 16;
         if (children && children.length > 0) {
-            for (var i = 0; i < children.length; i++) {
-                var child = children[i];
+            for (let i = 0, len = children.length; i < len; i++) {
+                let child = children[i];
                 height += child['height'] || 0;
                 width += child['width'] || 0;
             }
         }
-        var docHeight = document.body.clientHeight;
-        var docWidth = document.body.clientWidth;
-        var parentHeight = _parentDom.clientHeight;
-        var parentWidth = _parentDom.clientWidth;
-        var point = maptalks.DomUtil.getPagePosition(_parentDom);
-        var parentTop = point['y'];
-        var parentLeft = point['x'];
-        var vertical = options['vertical'];
+        let docHeight = document.body.clientHeight,
+            docWidth = document.body.clientWidth,
+            parentHeight = _parentDom.clientHeight,
+            parentWidth = _parentDom.clientWidth;
+        let point = maptalks.DomUtil.getPagePosition(_parentDom),
+            parentTop = point['y'],
+            parentLeft = point['x'];
+        let vertical = options['vertical'];
         if (vertical === undefined || vertical == null) {
             vertical = false;
         }
-        var dropMenuTop = parentHeight, dropMenuLeft = parentWidth;
+        let dropMenuTop = parentHeight, dropMenuLeft = parentWidth;
         if (!vertical) { //垂直
             if (parentTop + parentHeight + height > docHeight) {
                 dropMenuTop = -height + parentHeight / 2;
@@ -274,11 +275,8 @@ export class Toolbox extends maptalks.ui.UIComponent {
     }
 
     _createDropMenu(_parentDom, options) {
-        var vertical = options['vertical'];
-        if (vertical === undefined || vertical == null) {
-            vertical = false;
-        }
-        var style = 'position: absolute;';
+        let vertical = options['vertical'] || defaultOptions['vertical'];
+        let style = 'position: absolute;';
         if (vertical) {
             style += 'left: -10000px;';
         } else {
@@ -288,15 +286,15 @@ export class Toolbox extends maptalks.ui.UIComponent {
     }
 
     _createDropMenuDom(_parentDom, options, style) {
-        var dom = _parentDom.children[1];
+        let dom = _parentDom.children[1];
         if (dom) maptalks.DomUtil.removeDomNode(dom);
-        var _dropdownMenu = maptalks.DomUtil.createElOn('ul', style);
-        //构造下拉菜单
-        var items = options['children'];
+        let _dropdownMenu = maptalks.DomUtil.createElOn('ul', style);
+        //create drop menu.
+        let items = options['children'];
         if (items && items.length > 0) {
-            for (var i = 0, len = items.length; i < len; i++) {
-                var item = items[i];
-                if (item['vertical'] === undefined) {
+            for (let i = 0, len = items.length; i < len; i++) {
+                let item = items[i];
+                if (!item['vertical']) {
                     item['vertical'] = !(item['vertical'] || options['vertical']);
                 }
                 _dropdownMenu.appendChild(this._createMenuDom(item, 'li'));
@@ -307,15 +305,15 @@ export class Toolbox extends maptalks.ui.UIComponent {
     }
 
     _createIconDom(options) {
-        var _spanDom = maptalks.DomUtil.createEl('span');
-        var icon = options['icon'];
-        var content = options['item'];
-        var title = options['title'];
-        var html = options['html'];
+        let _spanDom = maptalks.DomUtil.createEl('span');
+        let icon = options['icon'],
+            content = options['item'],
+            title = options['title'],
+            html = options['html'];
         if (icon) {
-            var width = options['iconWidth'] || options['width'];
-            var height = options['iconHeight'] || options['height'];
-            var _imgDom = maptalks.DomUtil.createEl('img');
+            let width = options['iconWidth'] || options['width'],
+                height = options['iconHeight'] || options['height'];
+            let _imgDom = maptalks.DomUtil.createEl('img');
             _imgDom.src = icon;
             _imgDom.border = 0;
             _imgDom.width = width;

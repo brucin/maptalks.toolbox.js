@@ -52,7 +52,7 @@
         };
 
         var markerId = 'Marker'+ maptalks.Util.UID();
-        //创建点对象
+        //add marker to map.
         var marker = new maptalks.Marker(coordinate,{'draggable':true,'id':markerId});
         layer.addGeometry(marker);
         var toolbox = addToolboxToMarker(marker);
