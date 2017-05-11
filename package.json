@@ -1,6 +1,6 @@
 {
   "name": "maptalks.toolbox",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "A Toolbox plugin for maptalks.js.",
   "license": "MIT",
   "repository": {
@@ -36,7 +36,9 @@
     "maptalks": "^0.16.0",
     "maptalks-build-helpers": "^0.1.0",
     "minimist": "^1.2.0",
-    "mocha": "^2.4.5"
+    "karma-sinon": "^1.0.5",
+    "mocha": "^2.4.5",
+    "sinon": "^1.14.1"
   },
   "peerDependencies": {
     "maptalks": "<2.0.0"

@@ -39,8 +39,9 @@ export class Toolbox extends maptalks.ui.UIComponent {
     }
 
     addTo(owner) {
-        if(owner instanceof maptalks.Geometry) {
-            owner.on('positionchange', () => this._coordinate = owner.getCenter());
+        if (owner instanceof maptalks.Geometry) {
+            owner.on('positionchange', () => { this._coordinate = owner.getCenter(); });
+            this._coordinate = owner.getCenter();
         }
         return maptalks.ui.UIComponent.prototype.addTo.apply(this, arguments);
     }

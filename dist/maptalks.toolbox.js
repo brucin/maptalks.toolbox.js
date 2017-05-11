@@ -1,5 +1,5 @@
 /*!
- * maptalks.toolbox v0.1.0
+ * maptalks.toolbox v0.0.1
  * LICENSE : MIT
  * (c) 2016-2017 maptalks.org
  */
@@ -64,8 +64,9 @@ var Toolbox = function (_maptalks$ui$UICompon) {
 
         if (owner instanceof maptalks.Geometry) {
             owner.on('positionchange', function () {
-                return _this2._coordinate = owner.getCenter();
+                _this2._coordinate = owner.getCenter();
             });
+            this._coordinate = owner.getCenter();
         }
         return maptalks.ui.UIComponent.prototype.addTo.apply(this, arguments);
     };
