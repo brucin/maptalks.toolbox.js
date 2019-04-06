@@ -149,6 +149,12 @@ export class Toolbox extends maptalks.ui.UIComponent {
         dom = null;
     }
 
+    getPagePosition(obj) {
+        var docEl = document.documentElement;
+        var rect = obj.getBoundingClientRect();
+        return new maptalks.Point(rect['left'] + docEl['scrollLeft'], rect['top'] + docEl['scrollTop']);
+    }
+
     _createMenuDom(options, tag) {
         let _menuDom = maptalks.DomUtil.createEl('span');
         if (tag) {
@@ -249,7 +255,7 @@ export class Toolbox extends maptalks.ui.UIComponent {
             docWidth = document.body.clientWidth,
             parentHeight = _parentDom.clientHeight,
             parentWidth = _parentDom.clientWidth;
-        let point = maptalks.DomUtil.getPagePosition(_parentDom),
+        let point = this.getPagePosition(_parentDom),
             parentTop = point['y'],
             parentLeft = point['x'];
         let vertical = options['vertical'];

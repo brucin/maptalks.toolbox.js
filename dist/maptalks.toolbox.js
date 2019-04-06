@@ -174,6 +174,12 @@ var Toolbox = function (_maptalks$ui$UICompon) {
         dom = null;
     };
 
+    Toolbox.prototype.getPagePosition = function getPagePosition(obj) {
+        var docEl = document.documentElement;
+        var rect = obj.getBoundingClientRect();
+        return new maptalks.Point(rect['left'] + docEl['scrollLeft'], rect['top'] + docEl['scrollTop']);
+    };
+
     Toolbox.prototype._createMenuDom = function _createMenuDom(options, tag) {
         var _menuDom = maptalks.DomUtil.createEl('span');
         if (tag) {
@@ -274,7 +280,7 @@ var Toolbox = function (_maptalks$ui$UICompon) {
             docWidth = document.body.clientWidth,
             parentHeight = _parentDom.clientHeight,
             parentWidth = _parentDom.clientWidth;
-        var point = maptalks.DomUtil.getPagePosition(_parentDom),
+        var point = this.getPagePosition(_parentDom),
             parentTop = point['y'],
             parentLeft = point['x'];
         var vertical = options['vertical'];
